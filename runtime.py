@@ -390,8 +390,8 @@ def load_module(name, path):
 
     return module
 
-def predict_secondary_structure(fasta_path, eternafold_path="/home/bibekar/LBM/RNA/RISoTTo/software/EternaFold/src/contrafold", 
-                                      params_path="/home/bibekar/LBM/RNA/RISoTTo/software/EternaFold/parameters/EternaFoldParams.v1"):
+def predict_secondary_structure(fasta_path, eternafold_path="./software/EternaFold/src/contrafold", 
+                                      params_path="./software/EternaFold/parameters/EternaFoldParams.v1"):
     """Run EternaFold to predict RNA secondary structure."""
     temp_output = "tmp.txt"
     cmd = f"{eternafold_path} predict {fasta_path} --params {params_path} > {temp_output}"
