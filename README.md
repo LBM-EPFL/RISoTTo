@@ -1,4 +1,4 @@
-![risotto summary](.fig/risotto_summary.png)
+![risotto summary](.fig/risotto_summary.jpg)
 
 # RISoTTo
 
