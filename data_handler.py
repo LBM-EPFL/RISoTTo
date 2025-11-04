@@ -34,7 +34,6 @@ def extract_backbone_cg(X, qe, qr, qn, M, std_rna):
     has_purine_atoms = pt.any(qn[:,:-1][:,m_purine_atoms] > 0.5, dim=1)
     has_pyrimidine_atoms = pt.any(qn[:,:-1][:,m_pyrimidine_atoms] > 0.5, dim=1)
 
-    # Final mask:
     m = (~is_rna) | ((is_purine & has_purine_atoms) | (is_pyrimidine & has_pyrimidine_atoms))
 
     return X[m], qe[m], qr[m], qn[m], M[m]
