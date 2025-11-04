@@ -1,0 +1,10 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,2,0,3,1,ion,1,1.0,1.0,1.0,2.0,0.7867220640182495,0.5188967332251361
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,1,0,3,1,ion,1,0.0,0.0,1.0,2.0,0.8094991445541382,0.46386912707501443
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,0,0,3,1,ion,1,0.0,0.0,1.0,2.0,0.9178888201713562,0.6891652409015165
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,2,0,1,1,ion,3,0.6666666865348816,0.6666666666666666,0.6666666865348816,1.0,0.9956986904144287,0.9911365929421164
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,1,0,1,1,ion,3,0.6666666865348816,0.6666666666666666,0.6666666865348816,1.0,0.9968146681785583,0.9934730139301869
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,0,0,1,1,ion,3,0.6666666865348816,0.6666666666666666,0.6666666865348816,1.0,0.9965294003486633,0.9946838572847332
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,2,0,2,1,ion,2,1.0,0.5,1.0,1.0,0.9944505095481873,0.9904211815977646
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,1,0,2,1,ion,2,1.0,0.5,1.0,1.0,0.9941097497940063,0.9896406169610106
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/7TZT.pdb,0,0,2,1,ion,2,1.0,0.5,1.0,1.0,0.9970818161964417,0.9951317869712074

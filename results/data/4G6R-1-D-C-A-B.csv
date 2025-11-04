@@ -1,0 +1,13 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,2,3,0,3,rna,6,0.5,0.0,0.5,1.0,0.8627951145172119,0.7454206837861168
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,1,3,0,3,rna,6,0.5,0.0,0.6666666865348816,1.1666666269302368,0.8892090916633606,0.7588333937174427
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,0,3,0,3,rna,6,0.1666666716337204,0.16666666666666666,0.3333333432674408,1.1666666269302368,0.9358379244804382,0.8674303359327311
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,2,3,2,3,rna,17,0.8235294222831726,0.5294117647058824,0.8235294222831726,1.1176470518112183,0.9193825125694275,0.8545380742291947
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,1,3,2,3,rna,17,0.529411792755127,0.29411764705882354,0.5882353186607361,1.1176470518112183,0.9228901863098145,0.8055024448690441
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,0,3,2,3,rna,17,0.29411765933036804,0.29411764705882354,0.29411765933036804,1.0,0.9698692560195923,0.9360783160317401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,2,2,0,3,rna,4,0.75,0.75,0.75,1.25,0.931786298751831,0.8477304325632213
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,1,2,0,3,rna,4,0.75,0.75,0.75,1.25,0.9414201378822327,0.867220995728581
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,0,2,0,3,rna,4,0.0,0.0,0.0,1.0,0.9675551056861877,0.9197989725137139
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,2,2,3,3,rna,17,0.7647058963775635,0.7647058823529411,0.8823529481887817,1.2352941036224365,0.9408494830131531,0.8721899144261717
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,1,2,3,3,rna,17,0.5882353186607361,0.5882352941176471,0.7647058963775635,1.2352941036224365,0.9446943998336792,0.8878659912946807
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/4G6R-1-D-C-A-B.pdb,0,2,3,3,rna,17,0.1764705926179886,0.17647058823529413,0.29411765933036804,1.2352941036224365,0.9332699179649353,0.8682463619072417

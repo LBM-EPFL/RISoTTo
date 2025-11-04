@@ -1,0 +1,10 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,2,0,1,1,ligand,1,1.0,1.0,1.0,1.0,0.9989281296730042,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,1,0,1,1,ligand,1,1.0,1.0,1.0,1.0,0.9993963241577148,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,0,0,1,1,ligand,1,1.0,1.0,1.0,1.0,0.9984769225120544,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,2,0,2,1,ion,1,1.0,1.0,1.0,1.0,0.9989281296730042,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,1,0,2,1,ion,1,1.0,1.0,1.0,1.0,0.9993963241577148,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,0,0,2,1,ion,1,1.0,1.0,1.0,1.0,0.9984769225120544,0.9983884466300401
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,2,0,3,1,ion,6,0.8333333134651184,0.8333333333333334,0.8333333134651184,1.0,0.985186755657196,0.968947097428812
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,1,0,3,1,ion,6,0.8333333134651184,0.8333333333333334,0.8333333134651184,1.1666666269302368,0.9801569581031799,0.9624214971265644
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/437D.pdb,0,0,3,1,ion,6,0.8333333134651184,0.8333333333333334,0.8333333134651184,1.0,0.9811801314353943,0.9618944836204083

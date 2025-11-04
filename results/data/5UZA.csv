@@ -1,0 +1,13 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,2,0,4,1,ion,3,0.0,0.0,0.0,1.3333333730697632,0.9141525626182556,0.8429895487493267
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,1,0,4,1,ion,3,0.0,0.0,0.0,1.3333333730697632,0.8916299939155579,0.8123296550885138
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,0,0,4,1,ion,3,0.3333333432674408,0.3333333333333333,0.3333333432674408,1.3333333730697632,0.9181851744651794,0.8351390381402308
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,2,0,6,1,ion,2,0.5,0.5,0.5,1.0,0.9870997667312622,0.9464566955253493
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,1,0,6,1,ion,2,0.5,0.5,0.5,1.0,0.987347424030304,0.9474310880281556
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,0,0,6,1,ion,2,0.5,0.5,0.5,1.0,0.9687918424606323,0.9395317721530514
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,2,0,3,1,ligand,9,0.3333333432674408,0.0,0.3333333432674408,1.2222222089767456,0.9655941724777222,0.9122399701192163
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,1,0,3,1,ligand,9,0.3333333432674408,0.0,0.3333333432674408,1.1111111640930176,0.9598938822746277,0.9078377012963644
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,0,0,3,1,ligand,9,0.0,0.0,0.0,1.1111111640930176,0.9658585786819458,0.9335415413732603
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,2,0,5,1,ion,4,0.5,0.25,0.5,1.0,0.9758806228637695,0.9488756429227936
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,1,0,5,1,ion,4,0.5,0.25,0.5,1.0,0.9753682613372803,0.9472401400529309
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/5UZA.pdb,0,0,5,1,ion,4,0.5,0.5,0.5,1.25,0.9288047552108765,0.8321799091569314

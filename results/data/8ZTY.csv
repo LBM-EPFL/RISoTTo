@@ -1,0 +1,4 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/8ZTY.pdb,2,1,0,1,protein,48,0.2708333432674408,0.20833333333333334,0.5,1.5625,0.7983106970787048,0.5929527223335035
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/8ZTY.pdb,1,1,0,1,protein,48,0.2708333432674408,0.20833333333333334,0.4791666567325592,1.5,0.8000733256340027,0.5923454779995158
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/8ZTY.pdb,0,1,0,1,protein,48,0.25,0.1875,0.2708333432674408,1.0625,0.9527687430381775,0.8983883824943497

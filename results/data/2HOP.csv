@@ -1,0 +1,13 @@
+key,context_level,chain_id_scafold,chain_id_binder,num_subunits,binder_type,size,recovery_rate,sequence_similarity,maximum_recovery_rate,average_multiplicity,average_maximum_confidence,average_maximum_score
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,2,0,4,1,ion,3,0.3333333432674408,0.3333333333333333,0.6666666865348816,1.3333333730697632,0.899571418762207,0.8135236642424172
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,1,0,4,1,ion,3,0.3333333432674408,0.3333333333333333,0.6666666865348816,1.3333333730697632,0.8989623188972473,0.8114005896010518
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,0,0,4,1,ion,3,0.6666666865348816,0.6666666666666666,0.6666666865348816,1.3333333730697632,0.9203476905822754,0.8442488972504546
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,2,0,1,1,ion,3,0.0,0.0,0.3333333432674408,1.3333333730697632,0.9499454498291016,0.8287970066897198
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,1,0,1,1,ion,3,0.0,0.0,0.3333333432674408,1.3333333730697632,0.9581618309020996,0.8580559211902984
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,0,0,1,1,ion,3,0.6666666865348816,0.6666666666666666,0.6666666865348816,1.3333333730697632,0.9279739260673523,0.8687669380741915
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,2,0,2,1,ion,5,0.6000000238418579,0.6,0.800000011920929,1.2000000476837158,0.9451870918273926,0.8815661815501047
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,1,0,2,1,ion,5,0.6000000238418579,0.6,0.800000011920929,1.2000000476837158,0.9536740183830261,0.8971624746963613
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,0,0,2,1,ion,5,0.800000011920929,0.6,0.800000011920929,1.2000000476837158,0.9422110319137573,0.8558900638080604
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,2,0,3,1,ion,2,0.0,0.0,0.0,1.5,0.9204121232032776,0.8446712741339237
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,1,0,3,1,ion,2,0.0,0.0,0.0,1.5,0.9164139628410339,0.8374301413391648
+/scratch/bibekar/carbonara-rna/model/data/all_bioassemblies/pdbs/2HOP.pdb,0,0,3,1,ion,2,0.0,0.0,0.0,1.5,0.911401629447937,0.8478093377107101
