@@ -1,14 +1,14 @@
 >seq_wt | imprint_ratio=0.5 sampling=max_confidence
 AACGGGCGCAGAAUCUGACGGUACGUUU
->seq_0 | recovery=0.321 confidence=0.955
-UGCCGUACAUGGGCCAGAGGAACGGCUA
->seq_1 | recovery=0.393 confidence=0.987 recover_max_conf=0.893
-UGCUGUCCCUGGGCCAGAGGAACGGCUA
->seq_2 | recovery=0.357 confidence=0.989 recover_max_conf=0.964
-UGCCGUACCUGGGCCAGAGGAACGGCUA
->seq_3 | recovery=0.357 confidence=0.981 recover_max_conf=0.893
-UGCCGUCCCUGGGCCAGAGGAACGGCAA
->seq_4 | recovery=0.321 confidence=0.978 recover_max_conf=0.964
-UGCCGUACAUGGGGCAGAGGAACGGCUA
->seq_5 | recovery=0.250 confidence=0.993 recover_max_conf=0.929
-UGCCGUACAUGGGCCAUAGUAACGGCUA
+>seq_0 | recovery=0.321 confidence=0.958
+UGCUGUACAUGGGCCAGAGGAACGGCUA
+>seq_1 | recovery=0.321 confidence=0.991 recover_max_conf=0.929
+UGCUGUCCAUGGGCCAUAGGAACGGCUA
+>seq_2 | recovery=0.357 confidence=1.000 recover_max_conf=0.964
+UGCUGUCCAUGGGCCAGAGGAACGGCUA
+>seq_3 | recovery=0.286 confidence=0.982 recover_max_conf=0.964
+UGCUGUACAUGGGCCAGAGGAACGGCAA
+>seq_4 | recovery=0.357 confidence=0.980 recover_max_conf=0.964
+UGCUGUACAUGGGCCAGAGGAACGGCUU
+>seq_5 | recovery=0.321 confidence=0.989 recover_max_conf=0.929
+UGCUGUACCUGGGCCAGAGUAACGGCUA
