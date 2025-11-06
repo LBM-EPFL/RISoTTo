@@ -3,3 +3,6 @@ gemmi>=0.6.4
 numpy>=1.25.2
 tqdm>=4.66.1
 h5py>=3.9.0
+blosum
+scikit-learn
+PyYAML
