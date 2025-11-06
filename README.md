@@ -39,6 +39,7 @@ Test the installation with provided example:
 ```bash
 python apply_model.py --pdb_filepath=test_pdb/1csl.pdb --output_dir=test_pdb/ --num_samples=5 --imprint_ratio=0.5 --device=cuda --sampling=max_confidence
 ```
+This will generate `test_pdb/1csl_designs.fasta` with the designed sequences.
 
 ### Parameters
 
@@ -59,17 +60,6 @@ GACGCCCGCGUAAUACAAUGGAGGGUUG
 >seq_1 | recovery=0.500 confidence=0.972
 GAAGCCCGCGUAAUACAAUGGAGGGUUG
 ```
-
-## Example
-
-Test the installation with provided examples:
-
-```bash
-# Design sequences for a tRNA structure
-python apply_model.py --pdb_filepath=test_pdb/1csl.pdb --output_dir=test_pdb/ --num_samples=2 --imprint_ratio=0.5 --sampling=max_confidence --device=cuda
-```
-
-This will generate `test_pdb/1csl_designs.fasta` with the designed sequences.
 
 ## Train
 
