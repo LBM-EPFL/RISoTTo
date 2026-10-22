@@ -2,7 +2,6 @@
 import os
 import pandas as pd
 from time import time
-from datetime import timedelta
 
 
 class Logger:
@@ -54,16 +53,6 @@ class Logger:
         # update log file
         with open(self.log_lst_filepath, 'a') as fs:
             fs.write(s.to_json()+'\n')
-
-    def print_profiling_info(self, n_curr, n_step, n_total):
-        """Log print profiling information about elapsed time and estimated time of arrival."""
-        dt = time() - self.t0
-        dts = time() - self.ts
-        eta = (n_total-n_curr)*dt/n_step
-        self.print("> Elapsed time: {}".format(timedelta(seconds=dt)))
-        self.print("> Since last call: {}".format(timedelta(seconds=dts)))
-        self.print("> ETA: {}".format(timedelta(seconds=eta)))
-        self.ts = time()
 
     def restart_timer(self):
         """Restart timer for the profiler."""

@@ -8,8 +8,6 @@ from scipy import signal
 import subprocess
 
 import src as sp
-from software.ribonanzanet_sec_struct.network import RibonanzaNetSS
-from software.ribonanzanet.network import RibonanzaNet
 
 
 def aa_only(p: pt.Tensor, y: pt.Tensor):
@@ -33,12 +31,6 @@ def average_maximum_confidence(p: pt.Tensor):
     return pt.mean(pt.max(p, dim=1)[0])
 
 
-def max_pred_to_seq(p: pt.Tensor):
-    return "".join(
-        [sp.res3to1[r] for r in sp.std_rna[pt.argmax(p, dim=1).cpu().numpy()]]
-    )
-
-
 def pred_to_seq(p: pt.Tensor):
     std_rna_ = ["G", "A", "U", "C"]
     max_indices = pt.argmax(p, dim=1)
@@ -51,33 +43,6 @@ def seq_to_tensor(seq: str) -> pt.Tensor:
     char_to_idx = {c: i for i, c in enumerate(std_rna_)}
     indices = [char_to_idx[char] for char in seq]
     one_hot = pt.nn.functional.one_hot(pt.tensor(indices), num_classes=4).float()
-    return one_hot
-
-
-def sequence_to_onehot(sequence: str, res3to1: dict) -> pt.Tensor:
-    # Define the order of residues
-    residue_order = ["G", "A", "U", "C"]
-
-    # Convert the sequence string to a list of one-letter residue codes
-    sequence_list = [res3to1[res] for res in sequence]
-
-    # Initialize a tensor to store the one-hot encoding
-    num_residues = len(residue_order)
-    sequence_length = len(sequence_list)
-    onehot = pt.zeros(sequence_length, num_residues)
-
-    # Convert the sequence list to one-hot encoding
-    for i, res in enumerate(sequence_list):
-        if res in residue_order:
-            onehot[i, residue_order.index(res)] = 1
-
-    return onehot
-
-
-def ss_to_tensor(ss: str) -> pt.Tensor:
-    ss_map = {".": 0, "(": 1, ")": 2}
-    indices = [ss_map[char] for char in ss]
-    one_hot = pt.nn.functional.one_hot(pt.tensor(indices), num_classes=3).float()
     return one_hot
 
 
@@ -98,12 +63,6 @@ def binary_classification(y, q):
 
 def acc(TP, TN, FP, FN):
     return (TP + TN) / (TP + TN + FP + FN)
-
-
-def f1(TP, FP, FN):
-    v = 2 * TP / (2 * TP + FP + FN)
-    v[pt.isinf(v)] = np.nan
-    return v
 
 
 def mcc(TP, TN, FP, FN):
@@ -131,20 +90,6 @@ def sample_pred_to_seq(p: pt.Tensor):
     return seqm
 
 
-def kstar(c: pt.Tensor):
-    S = -pt.sum(c * pt.log2(c + 1e-6), dim=1)
-    return pt.pow(pt.tensor(2.0), S)
-
-
-def seq_to_features(seq):
-    resnames = np.array([sp.res1to3[r] for r in list(seq)])
-    return pt.from_numpy(sp.onehot(resnames, sp.std_resnames).astype(np.float32))
-
-
-def sequence_identity(seq_ref, seq):
-    return np.mean(np.array(list(seq_ref)) == np.array(list(seq)))
-
-
 def write_fasta(filepath, seq, info=""):
     with open(filepath, "w") as fs:
         fs.write(">{}\n{}".format(info, seq))
@@ -162,38 +107,8 @@ def read_fasta(fasta_filepath):
     return info, seq
 
 
-def traj_to_struct(traj):
-    df = traj.topology.to_dataframe()[0]
-    return {
-        "xyz": np.transpose(traj.xyz, (1, 0, 2)) * 1e1,
-        "name": df["name"].values,
-        "element": df["element"].values,
-        "resname": df["resName"].values,
-        "resid": df["resSeq"].values,
-        "het_flag": np.array(["A"] * traj.xyz.shape[1]),
-        "chain_name": df["chainID"].values,
-        "icode": np.array([""] * df.shape[0]),
-    }
-
-
 def atom_select(structure, sel):
     return {key: structure[key][sel] for key in structure}
-
-
-def get_TMscore(pdb_ref, pdb_pred):
-    # Run USalign
-    cmd = f"./software/USalign/USalign {pdb_pred} {pdb_ref}"
-    result = os.popen(cmd).read()
-
-    # Extract the first TM-score
-    for line in result.split("\n"):
-        if line.startswith("TM-score="):
-            # Extract the numeric value after "TM-score="
-            tm_score = float(line.split("=")[1].split()[0])
-            return tm_score
-
-    # if no TM-score found
-    return None
 
 
 def superpose(xyz_ref, xyz):
@@ -216,23 +131,44 @@ def superpose(xyz_ref, xyz):
 
 
 def compute_gdt_ts(
-    xyz0: pt.Tensor, xyz1: pt.Tensor, r_thr=[1.0, 2.0, 4.0, 8.0]
-) -> float:
-    # superpose
-    xyz1_aligned, xyz0_aligned = superpose(xyz0.view(1, -1, 3), xyz1.view(1, -1, 3))
+    xyz0: pt.Tensor,
+    xyz1: pt.Tensor,
+    r_thr=(1.0, 2.0, 4.0, 8.0),
+) -> pt.Tensor:
+    """
+    Global Distance Test Total Score (GDT_TS)
 
-    # compute pairwise distances
-    distances = pt.sqrt(pt.sum((xyz0_aligned - xyz1_aligned) ** 2, dim=2)).squeeze()
+    Assumes xyz0 and xyz1 are corresponding points with shape (N, 3).
+    Performs optimal superposition internally.
+    """
 
-    # percentage of atoms within each threshold
-    scores = []
-    for threshold in r_thr:
-        score = pt.sum(distances < threshold).item() / distances.shape[0] * 100
-        scores.append(score)
+    assert xyz0.shape == xyz1.shape, "Input shapes must match"
 
-    # compute GDT_TS as the average of scores at each threshold
-    gdt_ts = sum(scores) / len(r_thr)
-    return gdt_ts
+    # Superpose (add batch dim)
+    xyz0_aligned, xyz1_aligned = superpose(
+        xyz0.unsqueeze(0), xyz1.unsqueeze(0)
+    )
+
+    # Remove batch dim
+    xyz0_aligned = xyz0_aligned.squeeze(0)
+    xyz1_aligned = xyz1_aligned.squeeze(0)
+
+    # Per-point distances
+    dist = pt.norm(xyz0_aligned - xyz1_aligned, dim=1)
+
+    # Fraction below each cutoff
+    scores = [
+        (dist < thr).sum() / dist.numel()
+        for thr in r_thr
+    ]
+
+    out = pt.mean(pt.stack(scores))
+
+    # Safety guard
+    if pt.isnan(out) or pt.is_complex(out):
+        return pt.tensor(0.0, device=xyz0.device)
+
+    return out
 
 
 def compute_rmsd(xyz0, xyz1):
@@ -264,36 +200,15 @@ def compute_tm_score(X0: pt.Tensor, X1: pt.Tensor) -> pt.Tensor:
     X1_aligned = X1_aligned.squeeze(0)
 
     # Length of the structure
-    L = X0.shape[0]
-    d0 = 1.24 * (L - 15) ** (1 / 3) - 1.8
-    d0 = max(d0, 0.5)
+    L = X0_aligned.shape[0]
 
-    # Compute distances after alignment
-    dist = pt.sqrt(pt.sum((X0_aligned - X1_aligned) ** 2, dim=1))
+    d0 = 1.24 * (L - 15)**(1 / 3) - 1.8
+    di = pt.norm(X0_aligned - X1_aligned, dim=1)
+    output = pt.sum(1.0 / (1.0 + (di / d0)**2)) / L
 
-    # TM-score formula
-    score = pt.sum(1.0 / (1.0 + (dist / d0) ** 2)) / L
-
-    return score
-
-
-def compute_lDDT(X, X0, r_thr=[0.5, 1.0, 2.0, 4.0], R0=15.0):
-    # compute distance matrices
-    D = pt.norm(X.unsqueeze(0) - X.unsqueeze(1), dim=2)
-    D0 = pt.norm(X0.unsqueeze(0) - X0.unsqueeze(1), dim=2)
-
-    # thresholds
-    r_thr = pt.tensor(r_thr).to(D.device)
-
-    # local selection mask
-    M = ((D0 < R0) & (D0 > 0.0)).float()
-
-    # compute score Local Distance Difference Test
-    DD = (pt.abs(D0 - D).unsqueeze(0) < r_thr.view(-1, 1, 1)).float()
-    lDD = pt.sum(DD * M.unsqueeze(0), dim=2) / pt.sum(M, dim=1).unsqueeze(0)
-    lDDT = 1e2 * pt.mean(lDD, dim=0)
-
-    return lDDT
+    if pt.isnan(output).item():
+        return pt.tensor(0.0, device=output.device, dtype=output.dtype)
+    return output
 
 
 def process_structure(structure, rm_wat=True):
@@ -337,25 +252,6 @@ def split_by_residue(structure):
     ]
 
     return residues
-
-
-def cid_to_chain_name(structure):
-    structure["chain_name"] = np.array(
-        [
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"[i]
-            for i in structure["cid"]
-        ]
-    )
-    return structure
-
-
-def chain_masks(structure):
-    _, Mr, Mc = sp.encode_structure(sp.chain_name_to_index(structure), with_chains=True)
-    chain_names = [
-        structure["chain_name"][i].split(":")[0] for i in pt.max(Mc, dim=0)[1]
-    ]
-    mr_chains = pt.matmul(Mr.T, Mc) / pt.sum(Mr, dim=0).unsqueeze(1) > 0.0
-    return mr_chains, chain_names
 
 
 def subunit_type(subunit):
@@ -419,25 +315,6 @@ def predict_secondary_structure(
         print(f"Error reading EternaFold output: {e}")
 
     ss = ss_lines[-1].replace("\n", "")
-    return ss
-
-
-def predict_secondary_structure_ribonanzanet(fasta_path, device="cpu"):
-    """Predict RNA secondary structure using RibonanzaNetSS."""
-    # Load sequence from FASTA
-    with open(fasta_path, "r") as f:
-        lines = f.readlines()
-    sequence = "".join([line.strip() for line in lines if not line.startswith(">")])
-
-    ribonanza_net_ss = RibonanzaNetSS(
-        "software/ribonanzanet_sec_struct/config.yaml",
-        "software/ribonanzanet_sec_struct/ribonanzanet_ss.pt",
-        device,
-    )
-    ribonanza_net_ss = ribonanza_net_ss.to(device)
-    ribonanza_net_ss.eval()
-    ss = ribonanza_net_ss.predict(sequence[3:-1])[1][0]
-
     return ss
 
 
