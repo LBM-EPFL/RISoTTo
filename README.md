@@ -73,9 +73,18 @@ python main.py
 
 ### Optional dependencies
 
-If you want to run secondary structure based forward folding validation, install EternaFold in the `software` directory from [https://github.com/eternagame/EternaFold].
+If you want to run secondary structure based forward folding validation, build EternaFold [https://github.com/eternagame/EternaFold], which is included as a git submodule:
+
+```bash
+git submodule update --init software/EternaFold
+cd software/EternaFold/src && make
+```
 
 Download weights for Ribonanzanet for chemical reactivity predictions from [https://drive.google.com/drive/folders/1rDMwn_CJ3usmBN0_V0dQU6xAaciFgTXT?usp=sharing]
+
+## Reproducing the paper figures
+
+The data and notebooks for the benchmark (sequence recovery, 2D self-consistency, AlphaFold3 RMSD and pLDDT against gRNAde and RhoDesign) and molecular context figures are in [`paper/`](paper/README.md).
 
 ## License
 

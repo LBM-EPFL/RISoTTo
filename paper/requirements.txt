@@ -1,0 +1,9 @@
+# Additional packages to reproduce the paper figures (on top of ../requirements.txt).
+# Versions used to produce and verify the figures (python 3.11, torch 2.3.1).
+# biotite is pinned because the native 2D structure (dot-bracket) depends on it.
+biotite==1.2.0
+matplotlib==3.9.0
+seaborn==0.13.2
+pandas==2.2.2
+blosum==2.0.3
+jupyter

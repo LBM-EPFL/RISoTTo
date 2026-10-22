@@ -1,4 +1,5 @@
 import os
+import argparse
 import numpy as np
 import torch as pt
 import pandas as pd
@@ -29,12 +30,25 @@ def scoring(p, y, conf):
     }
 
 
+def apply_model(model, structure, **kwargs):
+    # the model initialises its state vectors randomly: reseed before every call so that
+    # results do not depend on the order in which chains are processed
+    pt.manual_seed(0)
+    return model(structure, **kwargs)
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Sequence recovery at RNA interfaces with and without molecular context")
+    parser.add_argument("--pdb_dir", default="paper/raw/native_pdbs", help="directory with native {PDBID}.pdb files")
+    parser.add_argument("--output_dir", default="paper/data/context_interfaces", help="directory for per-structure result CSVs")
+    args = parser.parse_args()
+
     # parameters
     device = pt.device("cuda:0" if pt.cuda.is_available() else "cpu")
 
     # results parameters
-    output_dir = "results/data"
+    output_dir = args.output_dir
+    os.makedirs(output_dir, exist_ok=True)
 
     # model parameters
     save_path = "save"
@@ -61,7 +75,7 @@ def main():
     pdbids_sel = np.array([sid.split('_')[0].lower() for sid in sids_sel])
 
     # get filepaths
-    pdb_filepaths = ['/media/bibekar/e500c9b8-094e-4f88-983c-27f30285d37a/bibekar/kuma_backup/carbonara-rna/data/data/all_bioassemblies/pdbs/{}.pdb'.format(pdbid.upper()) for pdbid in pdbids_sel]
+    pdb_filepaths = [os.path.join(args.pdb_dir, '{}.pdb'.format(pdbid.upper())) for pdbid in pdbids_sel]
     pdb_filepaths = [fp for fp in pdb_filepaths if os.path.exists(fp)]
     pdb_filepaths = [fp for fp in pdb_filepaths if os.path.getsize(fp) < 1e6]
     print("Number of structures:", len(pdb_filepaths))
@@ -107,7 +121,7 @@ def main():
         # apply model on full structure
         try:
             # print(pdb_filepath)
-            _, p, y = model(structure)
+            _, p, y = apply_model(model, structure)
         except ValueError:
             print("Structure too small", pdb_filepath)
             continue
@@ -122,7 +136,7 @@ def main():
         pc, yc = {}, {}
         for cid in cids_rna:
             m_known = (structure['chain_name'] != cid)
-            _, pi, yi = model(structure, m_known=m_known)
+            _, pi, yi = apply_model(model, structure, m_known=m_known)
             pi = pi[rcids==cid]
             yi = yi[rcids==cid]
             pi, yi = rt.aa_only(pi, yi)
@@ -139,7 +153,7 @@ def main():
                     # print(subunit)
                     # print(subunit['chain_name'])
                     try:
-                        _, pi, yi = model(subunit)
+                        _, pi, yi = apply_model(model, subunit)
                     except ValueError:
                         print("Structure too small", pdb_filepath)
                         continue
@@ -187,4 +201,8 @@ def main():
             # sys.exit(1)
 
 if __name__ == '__main__':
+    # chain ordering depends on python string hashing: rerun with a fixed hash seed for reproducible results
+    if os.environ.get("PYTHONHASHSEED") != "0":
+        os.environ["PYTHONHASHSEED"] = "0"
+        os.execv(sys.executable, [sys.executable] + sys.argv)
     main()

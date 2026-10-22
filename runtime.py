@@ -33,6 +33,13 @@ def average_maximum_confidence(p: pt.Tensor):
     return pt.mean(pt.max(p, dim=1)[0])
 
 
+def sequence_similarity(seq_ref, seq):
+    import blosum as bl
+
+    blm = bl.BLOSUM(62)
+    return np.mean(np.array([blm[si][sj] for si, sj in zip(seq_ref, seq)]) > 0)
+
+
 def max_pred_to_seq(p: pt.Tensor):
     return "".join(
         [sp.res3to1[r] for r in sp.std_rna[pt.argmax(p, dim=1).cpu().numpy()]]
@@ -216,23 +223,44 @@ def superpose(xyz_ref, xyz):
 
 
 def compute_gdt_ts(
-    xyz0: pt.Tensor, xyz1: pt.Tensor, r_thr=[1.0, 2.0, 4.0, 8.0]
-) -> float:
-    # superpose
-    xyz1_aligned, xyz0_aligned = superpose(xyz0.view(1, -1, 3), xyz1.view(1, -1, 3))
+    xyz0: pt.Tensor,
+    xyz1: pt.Tensor,
+    r_thr=(1.0, 2.0, 4.0, 8.0),
+) -> pt.Tensor:
+    """
+    Global Distance Test Total Score (GDT_TS)
 
-    # compute pairwise distances
-    distances = pt.sqrt(pt.sum((xyz0_aligned - xyz1_aligned) ** 2, dim=2)).squeeze()
+    Assumes xyz0 and xyz1 are corresponding points with shape (N, 3).
+    Performs optimal superposition internally.
+    """
 
-    # percentage of atoms within each threshold
-    scores = []
-    for threshold in r_thr:
-        score = pt.sum(distances < threshold).item() / distances.shape[0] * 100
-        scores.append(score)
+    assert xyz0.shape == xyz1.shape, "Input shapes must match"
 
-    # compute GDT_TS as the average of scores at each threshold
-    gdt_ts = sum(scores) / len(r_thr)
-    return gdt_ts
+    # Superpose (add batch dim)
+    xyz0_aligned, xyz1_aligned = superpose(
+        xyz0.unsqueeze(0), xyz1.unsqueeze(0)
+    )
+
+    # Remove batch dim
+    xyz0_aligned = xyz0_aligned.squeeze(0)
+    xyz1_aligned = xyz1_aligned.squeeze(0)
+
+    # Per-point distances
+    dist = pt.norm(xyz0_aligned - xyz1_aligned, dim=1)
+
+    # Fraction below each cutoff
+    scores = [
+        (dist < thr).sum() / dist.numel()
+        for thr in r_thr
+    ]
+
+    out = pt.mean(pt.stack(scores))
+
+    # Safety guard
+    if pt.isnan(out) or pt.is_complex(out):
+        return pt.tensor(0.0, device=xyz0.device)
+
+    return out
 
 
 def compute_rmsd(xyz0, xyz1):
@@ -264,17 +292,15 @@ def compute_tm_score(X0: pt.Tensor, X1: pt.Tensor) -> pt.Tensor:
     X1_aligned = X1_aligned.squeeze(0)
 
     # Length of the structure
-    L = X0.shape[0]
-    d0 = 1.24 * (L - 15) ** (1 / 3) - 1.8
-    d0 = max(d0, 0.5)
+    L = X0_aligned.shape[0]
 
-    # Compute distances after alignment
-    dist = pt.sqrt(pt.sum((X0_aligned - X1_aligned) ** 2, dim=1))
+    d0 = 1.24 * (L - 15)**(1 / 3) - 1.8
+    di = pt.norm(X0_aligned - X1_aligned, dim=1)
+    output = pt.sum(1.0 / (1.0 + (di / d0)**2)) / L
 
-    # TM-score formula
-    score = pt.sum(1.0 / (1.0 + (dist / d0) ** 2)) / L
-
-    return score
+    if pt.isnan(output).item():
+        return pt.tensor(0.0, device=output.device, dtype=output.dtype)
+    return output
 
 
 def compute_lDDT(X, X0, r_thr=[0.5, 1.0, 2.0, 4.0], R0=15.0):

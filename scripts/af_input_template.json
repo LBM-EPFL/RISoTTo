@@ -1,0 +1,24 @@
+{
+  "name": "Protein_RNA_Run",
+  "modelSeeds": [1],
+  "sequences": [
+    {
+      "protein": {
+        "id": "A",
+        "sequence": "MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQ",
+        "unpairedMsa": null,
+        "pairedMsa": null,
+        "templates": []
+      }
+    },
+    {
+      "rna": {
+        "id": "B",
+        "sequence": "GGGUGCGAGAGCGUACCC"
+      }
+    }
+  ],
+  "dialect": "alphafold3",
+  "version": 2
+}
+
