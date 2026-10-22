@@ -158,6 +158,7 @@ def main(
             pbar.set_postfix({"recovery": recovery, "confidence": confidence})
 
     # Write to output FASTA file
+    filename = os.path.splitext(os.path.basename(pdb_filepath))[0]
     fasta_path = os.path.join(output_filepath, f"{filename}_designs.fasta")
     with open(fasta_path, "w") as f:
         f.write("\n".join(fasta_lines))
@@ -200,7 +201,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    filename = os.path.splitext(os.path.basename(args.pdb_filepath))[0]
+    os.makedirs(args.output_dir, exist_ok=True)
     main(
         args.pdb_filepath,
         args.output_dir,

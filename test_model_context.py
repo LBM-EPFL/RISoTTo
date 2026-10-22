@@ -14,15 +14,10 @@ def scoring(p, y, conf):
     # compute confidence probability
     c = pt.from_numpy(conf(p.numpy()))
 
-    # get sequence
-    seq_ref = rt.max_pred_to_seq(y)
-    seq = rt.max_pred_to_seq(c)
-
     # assess predictions
     return {
         "size": p.shape[0],
         "recovery_rate": rt.recovery_rate(y, c).numpy().item(),
-        "sequence_similarity": rt.sequence_similarity(seq_ref, seq),
         "maximum_recovery_rate": rt.maximum_recovery_rate(y, p).numpy().item(),
         "average_multiplicity": rt.average_multiplicity(p).numpy().item(),
         "average_maximum_confidence": rt.average_maximum_confidence(p).numpy().item(),
@@ -82,9 +77,6 @@ def main():
 
     # set up dataset
     dataset = rt.StructuresDataset(pdb_filepaths)
-
-    # parameters
-    N = len(dataset)
 
     # sample predictions
     np.random.seed(0)

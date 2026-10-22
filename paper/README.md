@@ -17,7 +17,7 @@ Each figure is saved as `.png`, `.svg` and `.pdf`.
 ## Quick start: figures from the precomputed tables
 
 ```bash
-pip install -r requirements.txt -r paper/requirements.txt
+pip install -r requirements.txt   # from the repository root
 cd paper
 jupyter nbconvert --to notebook --execute --inplace fig_benchmark.ipynb
 jupyter nbconvert --to notebook --execute --inplace fig_context_interfaces.ipynb

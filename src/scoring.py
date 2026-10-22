@@ -1,6 +1,5 @@
 import numpy as np
 import torch as pt
-from scipy.stats import pearsonr
 from sklearn.metrics import roc_auc_score
 
 
@@ -96,11 +95,3 @@ def bc_scoring(y, p):
     return scores  # ['acc','ppv','npv','tpr','tnr','mcc','auc','std']
 
 
-def reg_scoring(y, p):
-    return {
-        'mse': float(pt.mean(pt.square(y - p)).cpu().numpy()),
-        'mae': float(pt.mean(pt.abs(y - p)).cpu().numpy()),
-        'rmse': float(pt.sqrt(pt.mean(pt.square(y - p))).cpu().numpy()),
-        'pcc': pearsonr(y.cpu().numpy(), p.cpu().numpy())[0] if not pt.allclose(y,y[0]) else np.nan,
-        'std': float(pt.std(p).cpu().numpy()),
-    }
