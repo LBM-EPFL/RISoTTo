@@ -18,24 +18,7 @@ Tested on a desktop with an Intel Core i7-12700K, 62 GB of RAM and an NVIDIA GeF
 
 ### Software dependencies
 
-Tested with **Python 3.11.8** and the versions below, which are pinned in `requirements.txt`:
-
-| package | version | used for |
-|---|---|---|
-| torch | 2.3.1 (CUDA 12.1 build) | model |
-| numpy | 1.26.4 | |
-| scipy | 1.13.1 | |
-| pandas | 2.2.2 | |
-| h5py | 3.13.0 | training dataset |
-| gemmi | 0.6.6 | structure parsing |
-| scikit-learn | 1.5.0 | training metrics |
-| tqdm | 4.66.4 | |
-| biotite | 1.2.0 | native 2D structures (benchmark) |
-| matplotlib | 3.9.0 | figures |
-| seaborn | 0.13.2 | figures |
-| tensorboard | 2.17.1 | training logs |
-| parmed | 4.3.0 | `scripts/cif_to_pdb.py` |
-| notebook / nbconvert / ipykernel | 7.2.2 / 7.16.4 / 6.29.4 | notebooks |
+Tested with **Python 3.11.8** and the versions, which are pinned in `requirements.txt`:
 
 Optional external software:
 - [EternaFold](https://github.com/eternagame/EternaFold) (git submodule at commit `13d2487`): 2D self-consistency in the benchmark.
@@ -60,7 +43,7 @@ git submodule update --init software/EternaFold   # if not cloned with --recurse
 cd software/EternaFold/src && make && cd -
 ```
 
-**Typical install time:** about 3 minutes on a normal desktop computer with a broadband connection. A clean `pip install -r requirements.txt` took 155 s, most of it downloading PyTorch and its CUDA libraries (about 6 GB on disk).
+**Typical install time:** A clean `pip install -r requirements.txt` took 155 s, most of it downloading PyTorch and its CUDA libraries (about 6 GB on disk).
 
 ## Demo
 
@@ -127,7 +110,13 @@ jupyter nbconvert --to notebook --execute --inplace fig_context_interfaces.ipynb
 
 **2. Recompute the metric tables from the raw data:**
 
-1. Download `risotto_paper_raw.tar.gz` from Zenodo (DOI: _to be added_) and extract it in `paper/` (`tar -xzf risotto_paper_raw.tar.gz` creates `paper/raw/`). It contains the native structures and the AlphaFold3 inputs, models and confidences of the designs.
+1. Download the raw data from Zenodo (DOI: [10.5281/zenodo.23566959](https://doi.org/10.5281/zenodo.23566959)) and extract it in `paper/`. It contains the native structures and the AlphaFold3 inputs, models and confidences of the designs.
+   ```bash
+   cd paper
+   wget https://zenodo.org/records/23566959/files/risotto_paper_raw.tar.gz
+   tar -xzf risotto_paper_raw.tar.gz   # creates paper/raw/
+   cd ..
+   ```
 2. Build EternaFold (see Installation).
 3. Benchmark: set `RECOMPUTE = True` in `paper/fig_benchmark.ipynb` and run it. This takes about 1 min on the test machine.
 4. Molecular context: run the following from the repository root. It takes about 30 s on the test GPU and is deterministic.

@@ -29,10 +29,11 @@ This only needs the tables in `data/` (committed to the repository) and takes a 
 
 ### 1. Raw data
 
-Download `risotto_paper_raw.tar.gz` from Zenodo (DOI: _to be added_) and extract it in this folder:
+Download `risotto_paper_raw.tar.gz` from Zenodo (DOI: [10.5281/zenodo.23566959](https://doi.org/10.5281/zenodo.23566959)) and extract it in this folder:
 
 ```bash
 cd paper
+wget https://zenodo.org/records/23566959/files/risotto_paper_raw.tar.gz
 tar -xzf risotto_paper_raw.tar.gz   # creates paper/raw/
 ```
 
