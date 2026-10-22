@@ -1,0 +1,80 @@
+#!/bin/sh -l
+#SBATCH --nodes=1
+#SBATCH --time=72:00:00
+#SBATCH --gres=gpu:1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem 90GB
+#SBATCH --partition=h100
+#SBATCH --account=updalpe
+
+set -u
+
+# If SKIP_IF_OUTPUT_PRESENT is 1 (default), skip any JSON whose output
+# directory already exists and is non-empty. Set to 0 to force reruns.
+: ${SKIP_IF_OUTPUT_PRESENT:=1}
+
+# Usage: sbatch scripts/run_af3.job   (override any of the variables below via the environment,
+#        e.g. JSON_DIR=grnade_af_json BASE_OUTPUT_DIR=grnade_af_output sbatch scripts/run_af3.job)
+# The SBATCH partition/account above are cluster specific.
+: ${JSON_DIR:="risotto_af_json"}
+: ${BASE_OUTPUT_DIR:="risotto_af_output"}
+: ${AF3_DIR:="/work/updalpe/singer/af3_db"}  # contains alphafold3.sif, params/ and the public databases
+SIF="${AF3_DIR}/alphafold3.sif"
+MODEL_BIND="${AF3_DIR}/params/:/root/models/"
+DB_BIND="${AF3_DIR}/:/root/public_databases/"
+# run_alphafold.py from https://github.com/google-deepmind/alphafold3
+: ${AF3_RUN_SCRIPT:="${HOME}/alphafold3/run_alphafold.py"}
+
+mkdir -p "${BASE_OUTPUT_DIR}"
+
+shopt -s nullglob
+files=( "${JSON_DIR}"/*.json )
+shopt -u nullglob
+
+if [ ${#files[@]} -eq 0 ]; then
+  echo "No JSON files found in ${JSON_DIR}"
+  exit 1
+fi
+
+for json_path in "${files[@]}"; do
+  # basename without extension (e.g. 1CSL_A.json -> 1CSL_A)
+  fname=$(basename -- "$json_path")
+  pdbid="${fname%.*}"
+
+  out_dir="${BASE_OUTPUT_DIR}/${pdbid}"
+  # If skipping is enabled and the out_dir exists and is non-empty, skip this JSON
+  if [ "${SKIP_IF_OUTPUT_PRESENT}" -ne 0 ] && [ -d "${out_dir}" ] && [ "$(ls -A "${out_dir}")" ]; then
+    echo "Skipping ${pdbid}: output directory ${out_dir} exists and is non-empty"
+    continue
+  fi
+  mkdir -p "${out_dir}"
+
+  echo "==== Running AF3 for ${pdbid} ===="
+  # log file per run
+  log="${out_dir}/run.log"
+
+  singularity exec --nv \
+    --bind "${json_path}":/root/af_input/fold_input.json \
+    --bind "${out_dir}":/root/af_output \
+    --bind "${MODEL_BIND}" \
+    --bind "${DB_BIND}" \
+    "${SIF}" \
+    python "${AF3_RUN_SCRIPT}" \
+      --json_path=/root/af_input/fold_input.json \
+      --model_dir=/root/models \
+      --db_dir=/root/public_databases \
+      --output_dir=/root/af_output \
+    > "${log}" 2>&1
+
+  rc=$?
+  if [ $rc -ne 0 ]; then
+    echo "Run for ${pdbid} FAILED (exit ${rc}). See ${log}. Continuing..."
+    # continue to next JSON
+    continue
+  else
+    echo "Run for ${pdbid} completed (log: ${log})."
+  fi
+done
+
+echo "All done."

@@ -1,0 +1,3 @@
+[submodule "software/EternaFold"]
+	path = software/EternaFold
+	url = https://github.com/eternagame/EternaFold.git
