@@ -2,14 +2,12 @@ import os
 import numpy as np
 import torch as pt
 from tqdm import tqdm
-import pandas as pd
 import subprocess
 
 import biotite
 import biotite.structure as struc
 import biotite.structure.io as strucio
 
-import src as sp
 import runtime as rt
 
 

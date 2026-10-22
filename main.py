@@ -1,7 +1,6 @@
 import json
 import os
 import warnings
-import sys
 
 from tqdm import tqdm
 
@@ -15,7 +14,6 @@ from src.logger import Logger
 from src.scoring import bc_score_names, bc_scoring, nanmean
 import torch as pt
 from torch.utils.data import DataLoader
-from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 from torch.utils.tensorboard import SummaryWriter
 warnings.filterwarnings("ignore")
 

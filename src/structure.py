@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.data_encoding import std_aminoacids, std_backbone, std_dna, std_rna
+from src.data_encoding import std_rna
 
 
 # resname convergion (37)
@@ -88,23 +88,8 @@ def split_by_chain(structure):
     return chains
 
 
-def extract_backbone(structure):
-    # amino-acids and backbone masks
-    # m_aa = np.isin(structure['resname'], std_aminoacids)
-    m_aa = np.isin(structure['resname'], std_rna)
-    m_bb = np.isin(structure['name'], std_backbone)
-
-    # mask (backbone & polymer residue) or (not polymer residue)
-    m = (~m_aa) | (m_aa & m_bb)
-
-    return atom_select(structure, m)
-
 def split_by_residue(subunit):
     return [atom_select(subunit, subunit['resid']==i) for i in np.unique(subunit['resid'])]
-
-
-def subunit_to_sequence(subunit):
-    return ''.join([res3to1[res['resname'][0]] for res in split_by_residue(subunit) if res['resname'][0] in res3to1])
 
 
 def concatenate_chains(chains):

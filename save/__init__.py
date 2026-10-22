@@ -4,7 +4,6 @@ from src.logger import *
 from src.molecule_templates import *
 from src.scoring import *
 from src.structure_analysis import *
-from src.structure_fix import *
 from src.structure_io import *
 from src.structure import *
 from src.geometry import *
